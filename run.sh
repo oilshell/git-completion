@@ -28,4 +28,10 @@ copy-upstream() {
   cp -v _tmp/git-$version/contrib/completion/git-completion.bash $version/
 }
 
+show-patch() {
+  local version=${1:-2.39.2}
+
+  diff -u $version/git-completion.{bash,osh}
+}
+
 "$@"
