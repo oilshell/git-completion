@@ -381,11 +381,6 @@ __gitcomp ()
 		;;
 	*)
 		local c i=0 IFS=$' \t\n'
-		# OSH patch: add a space unless ANY candidate look like a flag.
-		# The old code would add a space without compopt, but OSH would
-		# escape it with \, because it's more principled.
-		local add_space='T'
-
 		for c in $1; do
 			if [[ $c == "--" ]]; then
 				c="--no-...${4-}"
@@ -397,16 +392,12 @@ __gitcomp ()
 			c="$c${4-}"
 			if [[ $c == "$cur_"* ]]; then
 				case $c in
-				*=|*.) add_space='' ;;
-				#*) c="$c " ;;
+				*=|*.) ;;
+				*) c="$c " ;;
 				esac
 				COMPREPLY[i++]="${2-}$c"
 			fi
 		done
-
-		if [[ $add_space == 'T' ]] ; then
-			compopt +o nospace
-		fi
 		;;
 	esac
 }
@@ -415,7 +406,7 @@ __gitcomp ()
 # the completion script.
 if [[ -n ${ZSH_VERSION-} ]]; then
 	# Oils patch: remove zsh code that doesn't parse
-	true
+  true
 else
 	unset $(compgen -v __gitcomp_builtin_)
 fi
@@ -465,12 +456,7 @@ __gitcomp_builtin ()
 __gitcomp_nl_append ()
 {
 	local IFS=$'\n'
-	# OSH patch: If there's no suffix, then add a space.
-	local suffix="$4"
-	if test "$suffix" = ''; then
-		compopt +o nospace
-	fi
-	__gitcompappend "$1" "${2-}" "${3-$cur}" "$suffix"
+	__gitcompappend "$1" "${2-}" "${3-$cur}" "${4- }"
 }
 
 # Generates completion reply from newline-separated possible completion words

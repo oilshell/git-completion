@@ -28,23 +28,10 @@ copy-upstream() {
   cp -v _tmp/git-$version/contrib/completion/git-completion.bash $version/
 }
 
-show-diff() {
+show-patch() {
   local version=${1:-2.39.2}
 
   diff -u $version/git-completion.{bash,osh}
-}
-
-
-do-patch() {
-  local dir=${1:-2.39.2}
-
-  # Original
-  # https://github.com/oilshell/oil/commit/565e04b8dc37df930ab106f1a21805d5f25f5a83.patch
-  # Did NOT apply cleanly, manually edited the code
-  pushd $dir
-  patch -p 1 -o git-completion.osh \
-    git-completion.bash ../osh-git.patch
-  popd
 }
 
 "$@"
