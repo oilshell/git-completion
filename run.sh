@@ -15,10 +15,13 @@ version() {
   git --version
 }
 
+# git 2.17.1 is on Ubuntu 18.02
 download() {
+  local version=${1:-2.39.2}
+
   mkdir -p _tmp
   wget --no-clobber --directory _tmp \
-    https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.39.2.tar.xz
+    https://mirrors.edge.kernel.org/pub/software/scm/git/git-$version.tar.xz
 }
 
 copy-upstream() {
